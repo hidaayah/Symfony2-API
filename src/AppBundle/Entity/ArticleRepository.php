@@ -10,7 +10,12 @@ namespace AppBundle\Entity;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function insertData($params=array())
+	/**
+	 * Creates a new article
+	 * @param  array  $params holds the parameters to be inserted (int author_id, text $article)
+	 * @return boolean
+	 */
+	public function createArticle($params=array())
 	{
 		if(!is_array($params) || count($params) < 1) {
 			return false;
@@ -27,5 +32,28 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
 		$em->flush();
 
 		return true;
+	}
+
+	/**
+	 * gets the author id for the given article
+	 * @param  int $articleId The article Id
+	 * @return mixed          False on error, int on success
+	 */
+	public function getAuthorId($articleId)
+	{
+		$return = false;
+		if(!isset($articleId) || $articleId < 1) {
+			return $return;
+		}
+
+		$em = $this->getEntityManager();
+		
+		$getAuthor = $em->findOneById($articleId);
+		if(!is_null($getAuthor))
+		{
+			$return = $getAuthor->getAuthorId();
+		}
+
+		return $return;
 	}
 }
