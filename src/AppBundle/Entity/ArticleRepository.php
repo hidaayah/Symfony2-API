@@ -69,7 +69,7 @@ class ArticleRepository extends EntityRepository
 			'id' => $articleId
 			));
 		if($article != null) {
-			$createdOn = $article->getCreatedOn()->format('jS F Y H:i');
+			$createdOn = $article->getCreatedOn()->format('jS F Y @ H:i');
 
 			$return = array(
 				'article' => $article->getArticleText(),
@@ -77,7 +77,7 @@ class ArticleRepository extends EntityRepository
 				);
 
 		}
-		
+
 		return $return;
 	}
 }

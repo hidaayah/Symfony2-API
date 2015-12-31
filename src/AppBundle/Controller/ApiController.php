@@ -165,7 +165,7 @@ class ApiController extends Controller
 		$response = new JsonResponse();
 		$article = array(); // set a default value
 		$answers = array(); // set a default value
-		// also needs to retrieve all its answers
+
 		if($articleId < 1) {
 			$response->setData(array(
 				'message' => 'error',

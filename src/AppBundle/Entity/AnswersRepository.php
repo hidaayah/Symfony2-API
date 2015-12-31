@@ -39,7 +39,15 @@ class AnswersRepository extends \Doctrine\ORM\EntityRepository
 		$answers = $this->findBy(array(
 			'articleId' => $articleId
 			));
-		echo '<pre>'.print_r($answers, 1).'</pre>';
-		exit();
+		if($answers != null) {
+			foreach($answers as $v) {
+				$return[] = array(
+					'answer' => $v->getArticleAnswer(),
+					'created_on' => $v->getCreatedOn()->format('jS F Y @ H:i')
+					);
+			}
+		}
+
+		return $return;
 	}
 }
