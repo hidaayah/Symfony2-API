@@ -10,6 +10,7 @@ namespace AppBundle\Entity;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
+	protected $classTable = 'AppBundle:Article';
 	/**
 	 * Creates a new article
 	 * @param  array  $params holds the parameters to be inserted (int author_id, text $article)
@@ -55,5 +56,22 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
 		}
 
 		return $return;
+	}
+
+	public function getFullArticle($articleId)
+	{
+		$return = false;
+		if(!isset($articleId)) {
+			return $return;
+		}
+
+		$em = $this->getEntityManager();
+
+		$query = $em->createQuery('
+			SELECT a FROM '.$this->classTable.'
+			WHERE id = :articleId
+			LEFT JOIN answers an
+			ON an.articleId = a.id
+			');
 	}
 }
