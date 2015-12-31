@@ -10,4 +10,36 @@ namespace AppBundle\Entity;
  */
 class AnswersRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function saveAnswer($params)
+	{
+		if(!is_array($params) || count($params) < 1) {
+			return false;
+		}
+
+		$em = $this->getEntityManager();
+
+		$answer = new Answers();
+		$answer->setArticleId($params['article_id']);
+		$answer->setArticleAnswer($params['answer']);
+		$answer->setCreatedOn(new \DateTime());
+
+		$em->persist($answer);
+		$em->flush();
+
+		return true;
+	}
+
+	public function getAnswersByArticle($articleId)
+	{
+		$return = false;
+		if(!$articleId || $articleId < 1) {
+			return $return;
+		}
+
+		$answers = $this->findBy(array(
+			'articleId' => $articleId
+			));
+		echo '<pre>'.print_r($answers, 1).'</pre>';
+		exit();
+	}
 }

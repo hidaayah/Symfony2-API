@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -73,12 +74,12 @@ class ApiController extends Controller
 
 		$params = array(
 			'article_id' => $articleId,
-			'answer' => $response->getParameter('answer')
+			'answer' => $request->request->get('answer')
 			);
 		$em = $this->getDoctrine()->getManager();
 
 		// save the answer
-		$answer = $em->getRepository('AppBundle:Answer')->saveAnswer($params);
+		$answer = $em->getRepository('AppBundle:Answers')->saveAnswer($params);
 
 		if(!$answer) {
 			$response->setData(array(
@@ -174,7 +175,16 @@ class ApiController extends Controller
 		}
 
 		$em = $this->getDoctrine()->getManager();
-		$article = $em->getRepository('AppBundle:Article')->getFullArticle($articleId);
+		$article = $em->getRepository('AppBundle:Article')->getArticle($articleId);
+		if(!$article) {
+			$response->setData(array(
+				'message' => 'error',
+				'data' => 'article not found'
+				));
+			return $response;
+		}
+
+		$answers = $em->getRepository('AppBundle:Answers')->getAnswersByArticle($articleId);
 
 		$response->setData(array(
 			'message' => 'success',
