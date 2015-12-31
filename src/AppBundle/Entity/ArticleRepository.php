@@ -58,6 +58,11 @@ class ArticleRepository extends EntityRepository
 		return $return;
 	}
 
+	/**
+	 * Retreives an article based on the article id given
+	 * @param  int $articleId The article ID
+	 * @return mixed          FALSE on error, array on success
+	 */
 	public function getArticle($articleId)
 	{
 		$return = false;

@@ -10,6 +10,11 @@ namespace AppBundle\Entity;
  */
 class AnswersRepository extends \Doctrine\ORM\EntityRepository
 {
+	/**
+	 * Saves an answer
+	 * @param  array $params Holds an array with {(int)article_id, (text)answer}
+	 * @return boolean		 TRUE on success, FALSE on params not set
+	 */
 	public function saveAnswer($params)
 	{
 		if(!is_array($params) || count($params) < 1) {
@@ -29,6 +34,11 @@ class AnswersRepository extends \Doctrine\ORM\EntityRepository
 		return true;
 	}
 
+	/**
+	 * Retrieves all the answers based on the article id
+	 * @param  int $articleId The id of the article
+	 * @return mixed          FALSE on fail, ARRAY on success
+	 */
 	public function getAnswersByArticle($articleId)
 	{
 		$return = false;

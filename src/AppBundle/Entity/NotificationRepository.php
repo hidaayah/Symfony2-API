@@ -10,6 +10,11 @@ namespace AppBundle\Entity;
  */
 class NotificationRepository extends \Doctrine\ORM\EntityRepository
 {
+	/**
+	 * Adds a notification for the given author
+	 * @param  array $params Holds an array with {(int)author_id, (text)notification}
+	 * @return boolean
+	 */
 	public function createNotification($params)
 	{
 		if(!isset($params) || count($params) < 1) {
