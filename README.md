@@ -1,4 +1,7 @@
-ironweb
+Symfony 2 API
 =======
 
-A Symfony project created on December 23, 2015, 10:44 pm.
+Goal: 
+ - The goal is to create an API that will allow to create an article, answer to an article, rate an article (between 0 and 5 ==> 0, 1, 2, 3, 4, 5)
+ - This API should also include to retrieve an article and all its answers
+ - Write some unit tests.
