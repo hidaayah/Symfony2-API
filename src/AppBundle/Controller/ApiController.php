@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,9 +16,10 @@ class ApiController extends Controller
 	 */
 	public function createArticleAction(Request $request)
 	{
-		$authorId = $request->request->get('author_id');
+		$json = json_decode($request->request->get('data'), true);
+		$authorId = $json['author_id'];
+		$response = new JsonResponse();
 		if(!$authorId) {
-			$response = new JsonResponse();
 			$response->setData(array(
 				'message' => 'error',
 				'data' => 'author id not set'
@@ -29,7 +29,7 @@ class ApiController extends Controller
 
 		$params = array(
 			'author_id' => $authorId,
-			'article' => $request->request->get('article')
+			'article' => $json['article']
 			);
 
 		$em = $this->getDoctrine()->getManager();
@@ -48,7 +48,6 @@ class ApiController extends Controller
 		$params['notification'] = 'A new article has been created';
 		$notification = $em->getRepository('AppBundle:Notification')->createNotification($params);
 
-		$response = new JsonResponse();
 		$response->setData(array(
 			'message' => 'success'
 			));
@@ -62,8 +61,9 @@ class ApiController extends Controller
 	 */
 	public function answerArticleAction(Request $request)
 	{
+		$json = json_decode($request->request->get('data'), true);
 		$response = new JsonResponse();
-		$articleId = $request->request->get('article_id');
+		$articleId = $json['article_id'];
 		if(!$articleId) {
 			$response->setData(array(
 				'message' => 'error',
@@ -74,7 +74,7 @@ class ApiController extends Controller
 
 		$params = array(
 			'article_id' => $articleId,
-			'answer' => $request->request->get('answer')
+			'answer' => $json['answer']
 			);
 		$em = $this->getDoctrine()->getManager();
 
@@ -112,8 +112,9 @@ class ApiController extends Controller
 	 */
 	public function rateArticleAction(Request $request)
 	{
+		$json = json_decode($request->request->get('data'), true);
 		$response = new JsonResponse();
-		$articleId = $request->request->get('article_id');
+		$articleId = $json['article_id'];
 		if(!$articleId) {
 			$response->setData(array(
 				'message' => 'error',
@@ -126,7 +127,7 @@ class ApiController extends Controller
 
 		$params = array(
 			'article_id' => $articleId,
-			'rating' => $request->request->get('rating'),
+			'rating' => $json['rating'],
 			);
 
 		// save the rating
