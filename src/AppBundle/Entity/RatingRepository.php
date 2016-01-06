@@ -10,4 +10,22 @@ namespace AppBundle\Entity;
  */
 class RatingRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function saveRating($params)
+	{
+		if(!is_array($params) || count($params) < 1) {
+			return false;
+		}
+
+		$em = $this->getEntityManager();
+
+		$rating = new Rating();
+		$rating->setArticleId($params['article_id']);
+		$rating->setStarRating($params['rating']);
+		$rating->setCreatedOn(new \DateTime());
+
+		$em->persist($rating);
+		$em->flush();
+
+		return true;
+	}
 }
