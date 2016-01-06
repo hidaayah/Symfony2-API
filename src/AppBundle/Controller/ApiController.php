@@ -115,10 +115,11 @@ class ApiController extends Controller
 		$json = json_decode($request->request->get('data'), true);
 		$response = new JsonResponse();
 		$articleId = $json['article_id'];
-		if(!$articleId) {
+		$starRating = $json['rating'];
+		if(!$articleId || $starRating < 0 || $starRating > 5 || !is_numeric($starRating)) {
 			$response->setData(array(
 				'message' => 'error',
-				'data' => 'article id not set'
+				'data' => 'article id not set or rating not in correct format'
 				));
 			return $response;
 		}
@@ -127,7 +128,7 @@ class ApiController extends Controller
 
 		$params = array(
 			'article_id' => $articleId,
-			'rating' => $json['rating'],
+			'rating' => $starRating,
 			);
 
 		// save the rating
