@@ -132,7 +132,7 @@ class ApiController extends Controller
 
 		// save the rating
 		$rating = $em->getRepository('AppBundle:Rating')->saveRating($params);
-		if($rating) {
+		if(!$rating) {
 			$response->setData(array(
 				'message' => 'error',
 				'data' => 'there was a problem saving the rating'
@@ -185,7 +185,8 @@ class ApiController extends Controller
 			return $response;
 		}
 
-		$answers = $em->getRepository('AppBundle:Answers')->getAnswersByArticle($articleId);
+		$getAnswers = $em->getRepository('AppBundle:Answers')->getAnswersByArticle($articleId);
+		$answers = (!$getAnswers)?$answers:$getAnswers;
 
 		$response->setData(array(
 			'message' => 'success',
